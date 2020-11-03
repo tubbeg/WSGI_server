@@ -71,7 +71,13 @@ class Server(object):
 
     def handle_request(self, client_connection):
         data = client_connection.recv(1024)
-        self._request_method, self._path, self._request_version = self.parse_req(data.decode('utf-8'))
+        try:
+            parsed_request = self.parse_req(data.decode('utf-8'))
+            print(parsed_request)
+            self._request_method, self._path, self._request_version = parsed_request
+        except Exception as e:
+            print(e)
+            sys.exit(1)
         app_result = self._app(self.get_environ(), self.start_response)
         self.send_response(app_result, client_connection)
 
