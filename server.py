@@ -73,7 +73,6 @@ class Server(object):
         data = client_connection.recv(1024)
         try:
             parsed_request = self.parse_req(data.decode('utf-8'))
-            print(parsed_request)
             self._request_method, self._path, self._request_version = parsed_request
         except Exception as e:
             print(e)
@@ -82,7 +81,10 @@ class Server(object):
         self.send_response(app_result, client_connection)
 
     def parse_req(self, request):
-        return request.split()[:3]
+        result = request.split()[:3]
+        if isinstance(result, tuple)
+            return result
+        return Exception("Incorrect http request line")
 
     def make_response(self, app_result):
         status, response_headers = self._status, self._headers
