@@ -82,8 +82,9 @@ class Server(object):
 
     def parse_req(self, request):
         result = request.split()[:3]
-        if isinstance(result, tuple)
+        if isinstance(result, list):
             return result
+        print(result)
         return Exception("Incorrect http request line")
 
     def make_response(self, app_result):
