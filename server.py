@@ -1,11 +1,9 @@
 import datetime
-import email
 import io
-import json
 import os
-import pprint
-
+import gevent
 from gevent import socket
+from gevent.pool import Pool
 import sys
 
 """
@@ -17,8 +15,10 @@ inspired by:
 * https://docs.python.org/3/library/wsgiref.html#wsgiref.simple_server.WSGIServer
 """
 
+
+
 class Server(object):
-    def __init__(self, server_address):
+    def __init__(self, server_address, nr_of_greenlets):
         self._socket, self._server_name, self._port = self.__init_socket(server_address)
         self._headers = None
         self._status = None
@@ -27,6 +27,7 @@ class Server(object):
         self._request_version = None
         self._request_data = None
         self._request_method = None
+        self._pool = Pool(nr_of_greenlets)
 
     def __init_socket(self, server_address):
         server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM) #IPV4 and TCP
@@ -67,7 +68,8 @@ class Server(object):
         while True: # <-- this is not good
             # get connection and address
             client_connection, _ = self._socket.accept()
-            self.handle_request(client_connection)
+            #self.handle_request(client_connection)
+            self._pool.spawn(self.handle_request, client_connection)
 
     def handle_request(self, client_connection):
         data = client_connection.recv(1024)
