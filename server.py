@@ -86,7 +86,7 @@ class Server(object):
         result = request.split()[:3]
         if isinstance(result, list):
             return result
-        print(result)
+        #print(result)
         return Exception("Incorrect http request line")
 
     def make_response(self, app_result):
@@ -103,7 +103,7 @@ class Server(object):
     def send_response(self, app_result, client_connection):
         try:
             response = self.make_response(app_result)
-            print(response)
+            #print(response)
             response_bytes = response.encode()
             client_connection.sendall(response_bytes)
         except Exception as e:
