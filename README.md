@@ -27,7 +27,7 @@ was measured using ApacheBench (https://httpd.apache.org/docs/2.4/programs/ab.ht
 http request line then it will result in an exception on the server
 * Return write on start_response. This is still not a pure WSGI server
 
-##More information
+## More information
 This implementation was inspired by:
 * https://ruslanspivak.com/lsbaws-part2/
 * PEP3333
